@@ -6,3 +6,7 @@ pnpm-debug.log
 dist/
 .cache/
 *.tgz
+*.d.ts
+*.js
+*.jsx
+*.map

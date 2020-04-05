@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+let compiler = require('surplus/compiler');
+let fs = require('fs');
+let path = require('path');
+
+function build(file) {
+  console.log('build', file);
+  let input = fs.readFileSync(file).toString();
+  const { src, map } = compiler.compile(input, { sourcemap: 'extract' });
+  fs.writeFileSync(file.replace(/\.jsx$/, '.js'), src);
+  fs.writeFileSync(file.replace(/\.jsx$/, '.js.map'), map);
+}
+
+function scan(dir) {
+  let files = fs.readdirSync(dir);
+  files.forEach(file => {
+    if (file.endsWith('.jsx')) {
+      build(path.join(dir, file));
+    }
+  });
+}
+
+scan('src');
