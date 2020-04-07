@@ -1,7 +1,7 @@
 # s-json
 General purpose JSON viewer and editor
 
-[![npm Package Version](https://img.shields.io/npm/v/s-json.svg?maxAge=2592000)](https://www.npmjs.com/package/s-json)
+[![npm Package Version](https://img.shields.io/npm/v/@beenotung/s-json.svg?maxAge=2592000)](https://www.npmjs.com/package/@beenotung/s-json)
 
 Powered by
 [S.js](https://github.com/adamhaile/S)

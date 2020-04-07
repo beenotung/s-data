@@ -12,3 +12,4 @@ dist/
 *.map
 www/
 src/package.json
+src/README.md

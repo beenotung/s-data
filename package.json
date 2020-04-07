@@ -1,13 +1,14 @@
 {
-  "name": "s-json",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "author": {
-    "name": "Beeno Tung",
-    "email": "aabbcc1241@yahoo.com.hk",
-    "url": "https://beeno-tung.surge.sh"
-  },
+  "name": "@beenotung/s-json",
+  "version": "0.1.0",
+  "description": "General purpose JSON viewer and editor",
+  "keywords": [
+    "s.js",
+    "surplus",
+    "json",
+    "dev"
+  ],
+  "author": "Beeno Tung <aabbcc1241@yahoo.com.hk> (https://beeno-tung.surge.sh)",
   "license": "BSD-2-Clause",
   "main": "index.js",
   "types": "index.d.ts",
@@ -19,11 +20,10 @@
     "build": "run-s build:*",
     "build:tsx": "tsc",
     "build:jsx": "node scripts/compile-jsx",
-    "postbuild": "cp -f package.json *.md LIECNSE src/",
+    "postbuild": "cp -f package.json *.md LICENSE src/",
     "dev": "webpack -w --mode=development",
     "prod": "webpack -p --mode=production",
-    "test": "npm run format",
-    "prepublishOnly": "npm test && npm run build"
+    "test": "npm run format"
   },
   "husky": {
     "hook": {
