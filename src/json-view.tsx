@@ -1,12 +1,13 @@
 import * as Surplus from 'surplus';
 import { JsonHelpers } from './helpers';
 
+// tslint:disable-next-line no-unused-expression
 Surplus;
 
 export type JsonViewProps<T> = {
   data: T,
   name?: string
-  expandElement?: boolean
+  expandElement?: boolean,
 };
 
 /**
@@ -76,7 +77,7 @@ export namespace JsonViewRenders {
   }
 
   export function text(props: JsonViewProps<Text>) {
-    let textContent = props.data.textContent;
+    const textContent = props.data.textContent;
     return table({
       textContent:
         textContent === null ? Null(props) :
@@ -85,9 +86,9 @@ export namespace JsonViewRenders {
   }
 
   export function attributes(attrs: NamedNodeMap): object {
-    let res = {} as any;
+    const res = {} as any;
     for (let i = 0; i < attrs.length; i++) {
-      let attr = attrs.item(i);
+      const attr = attrs.item(i);
       if (attr === null) {
         continue;
       }
@@ -97,8 +98,8 @@ export namespace JsonViewRenders {
   }
 
   export function htmlElement(props: JsonViewProps<HTMLElement>) {
-    let e = props.data as HTMLInputElement;
-    let res = {
+    const e = props.data as HTMLInputElement;
+    const res = {
       tagName: e.tagName.toLocaleLowerCase(),
       id: e.id,
       className: e.className,
@@ -108,7 +109,7 @@ export namespace JsonViewRenders {
     };
     Object.keys(res).forEach((_key) => {
       const key = _key as keyof typeof res;
-      let value = res[key];
+      const value = res[key];
       switch (value) {
         case '':
         case null:
@@ -132,6 +133,7 @@ export namespace JsonViewRenders {
     return string({ ...props, data: props.data ? 'yes' : 'no' });
   }
 
+  // tslint:disable-next-line ban-types
   export function Function(props: JsonViewProps<Function>) {
     return string({ ...props, data: props.data.toString() });
   }
@@ -152,7 +154,7 @@ export namespace JsonViewRenders {
     return string({ ...props, data: Object.prototype.toString.call(props.data) });
   }
 }
-let r = JsonViewRenders;
+const r = JsonViewRenders;
 
 /**
  * supported data type:
