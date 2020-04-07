@@ -13,7 +13,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "clean": "rimraf dist src/*.{map,js,jsx,d.ts}",
+    "clean": "rimraf dist src/*.{map,js,jsx,d.ts} src/{README.md,LICENSE,package.json}",
     "format": "prettier --write \"src/**/*.ts\"",
     "postformat": "tslint -p . --fix",
     "prebuild": "npm run clean",
