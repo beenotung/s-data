@@ -12,7 +12,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "rimraf dist src/*.{map,.d.ts,.js}",
+    "clean": "rimraf dist src/*.{map,js,jsx,d.ts}",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "postformat": "tslint -p . --fix",
     "prebuild": "npm run clean",
@@ -38,7 +38,8 @@
     "@beenotung/tslib": "^16.15.0",
     "s-array": "^0.4.10",
     "s-js": "^0.4.9",
-    "surplus": "^0.5.3"
+    "surplus": "^0.5.3",
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@stencil/core": "^1.12.1",

@@ -1,24 +1,24 @@
-import * as Surplus from 'surplus';Surplus;
+import * as Surplus from 'surplus';
+import { JsonHelpers } from './helpers';
+
+Surplus;
+
 export type JsonViewProps<T> = {
   data: T,
   name?: string
   expandElement?: boolean
 };
-export namespace JsonRenders {
-  export function isTimeName(name: string) {
-    return name.includes('time') || name.includes('date');
+
+/**
+ * functions inside can be overridden
+ * */
+export namespace JsonViewRenders {
+  export function date(props: JsonViewProps<Date>) {
+    return string({ ...props, data: props.data.toLocaleString() });
   }
 
-  export function name(name: PropertyKey | undefined): string {
-    return (name || '').toString().toLocaleLowerCase();
-  }
-
-  export function date(data: Date) {
-    return string(data.toLocaleString());
-  }
-
-  export function number(data: number) {
-    return string(data.toLocaleString());
+  export function number(props: JsonViewProps<number>) {
+    return string({ ...props, data: props.data.toLocaleString() });
   }
 
   export function set(prop: JsonViewProps<Set<any>>) {
@@ -53,7 +53,7 @@ export namespace JsonRenders {
     return <table>
       <tbody>
       {Object.entries(data).map(([key, value]) => <tr>
-        <td>{string(key)}:</td>
+        <td>{string({ data: key })}:</td>
         <td>{value as HTMLElement}</td>
       </tr>)}
       </tbody>
@@ -64,22 +64,23 @@ export namespace JsonRenders {
     return <table>
       <tbody>
       {Object.entries(props.data).map(([key, value]) => <tr>
-        <td>{string(key)}:</td>
+        <td>{string({ ...props, data: key })}:</td>
         <td><JsonView {...props} data={value} name={key}/></td>
       </tr>)}
       </tbody>
     </table>;
   }
 
-  export function string(data: string) {
-    return <span>{data}</span>;
+  export function string(props: JsonViewProps<string>) {
+    return <span>{props.data}</span>;
   }
 
-  export function text(data: Text) {
+  export function text(props: JsonViewProps<Text>) {
+    let textContent = props.data.textContent;
     return table({
       textContent:
-        data.textContent === null ? Null() :
-          string(data.textContent),
+        textContent === null ? Null(props) :
+          string({ ...props, data: textContent }),
     });
   }
 
@@ -95,15 +96,15 @@ export namespace JsonRenders {
     return res;
   }
 
-  export function htmlElement(data: HTMLElement) {
-    let input = data as HTMLInputElement;
+  export function htmlElement(props: JsonViewProps<HTMLElement>) {
+    let e = props.data as HTMLInputElement;
     let res = {
-      tagName: data.tagName.toLocaleLowerCase(),
-      id: data.id,
-      className: data.className,
-      attributes: data.attributes.length > 0 ? attributes(data.attributes) : void 0,
-      nodeValue: data.nodeValue,
-      value: input.value,
+      tagName: e.tagName.toLocaleLowerCase(),
+      id: e.id,
+      className: e.className,
+      attributes: e.attributes.length > 0 ? attributes(e.attributes) : void 0,
+      nodeValue: e.nodeValue,
+      value: e.value,
     };
     Object.keys(res).forEach((_key) => {
       const key = _key as keyof typeof res;
@@ -123,65 +124,83 @@ export namespace JsonRenders {
     return object({ data: res });
   }
 
-  export function bigint(data: bigint) {
-    return string(data.toLocaleString());
+  export function bigint(props: JsonViewProps<bigint>) {
+    return string({ ...props, data: props.data.toLocaleString() });
   }
 
-  export function boolean(data: boolean) {
-    return string(data ? 'yes' : 'no');
+  export function boolean(props: JsonViewProps<boolean>) {
+    return string({ ...props, data: props.data ? 'yes' : 'no' });
   }
 
-  export function Function(data: Function) {
-    return string(data.toString());
+  export function Function(props: JsonViewProps<Function>) {
+    return string({ ...props, data: props.data.toString() });
   }
 
-  export function symbol(data: symbol) {
-    return string(data.toString());
+  export function symbol(props: JsonViewProps<symbol>) {
+    return string({ ...props, data: props.data.toString() });
   }
 
-  export function Null() {
-    return string('null');
+  export function Null(props: JsonViewProps<any>) {
+    return string({ ...props, data: 'null' });
   }
 
-  export function undefined() {
-    return string('undefined');
+  export function undefined(props: JsonViewProps<undefined>) {
+    return string({ ...props, data: 'undefined' });
   }
 
-  export function unknown(data: unknown) {
-    return string(Object.prototype.toString.call(data));
+  export function unknown(props: JsonViewProps<unknown>) {
+    return string({ ...props, data: Object.prototype.toString.call(props.data) });
   }
 }
-let r = JsonRenders;
+let r = JsonViewRenders;
 
+/**
+ * supported data type:
+ *   + HTMLElement
+ *   + Text (DOM node)
+ *   + string
+ *   + number
+ *   + timestamp (in number)
+ *   + Date
+ *   + bigint
+ *   + boolean
+ *   + function (show the source code)
+ *   + symbol
+ *   + undefined
+ *   + null
+ *   + Set
+ *   + Map
+ *   + Array
+ *   + object
+ * */
 export function JsonView(props: JsonViewProps<any>): HTMLElement {
-  const data = props.data;
-  const name = r.name(props.name);
+  const data: unknown = props.data;
   const type = typeof data;
   switch (type) {
     case 'string':
-      return data;
+      return r.string(props);
     case 'number':
-      if (r.isTimeName(name)) {
-        return r.date(new Date(data));
+      if (JsonHelpers.isTimeName(props.name)) {
+        return r.date({ ...props, data: new Date(data as number) });
       } else {
-        return r.number(data);
+        return r.number(props);
       }
     case 'bigint':
-      return r.bigint(data);
+      return r.bigint(props);
     case 'boolean':
-      return r.boolean(data);
+      return r.boolean(props);
     case 'function':
-      return r.Function(data);
+      return r.Function(props);
     case 'symbol':
-      return r.symbol(data);
+      return r.symbol(props);
     case 'undefined':
-      return r.undefined();
+      return r.undefined(props);
     case 'object':
       if (data === null) {
-        return r.Null();
+        return r.Null(props);
       }
       if (data instanceof Date) {
-        return r.date(data);
+        return r.date(props);
       }
       if (data instanceof Set) {
         return r.set(props);
@@ -194,10 +213,10 @@ export function JsonView(props: JsonViewProps<any>): HTMLElement {
       }
       if (props.expandElement) {
         if (data instanceof Text) {
-          return r.text(data);
+          return r.text(props);
         }
         if (data instanceof HTMLElement) {
-          return r.htmlElement(data);
+          return r.htmlElement(props);
         }
       }
       if (data instanceof Text) {
@@ -210,7 +229,7 @@ export function JsonView(props: JsonViewProps<any>): HTMLElement {
     default: {
       const x: never = type;
       console.error('unknown data type:', x);
-      return r.unknown(data);
+      return r.unknown(props);
     }
   }
 }

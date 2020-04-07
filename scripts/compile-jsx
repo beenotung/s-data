@@ -5,10 +5,14 @@ let path = require('path');
 
 function build(file) {
   console.log('build', file);
-  let input = fs.readFileSync(file).toString();
+  const input = fs.readFileSync(file).toString();
+  const jsxFilename = path.basename(file);
+  const jsFilename = jsxFilename.replace(/\.jsx$/, '.js');
   const { src, map } = compiler.compile(input, { sourcemap: 'extract' });
+  map.file = jsFilename;
+  map.sources = [jsxFilename];
   fs.writeFileSync(file.replace(/\.jsx$/, '.js'), src);
-  fs.writeFileSync(file.replace(/\.jsx$/, '.js.map'), map);
+  fs.writeFileSync(file.replace(/\.jsx$/, '.js.map'), JSON.stringify(map));
 }
 
 function scan(dir) {
