@@ -10,3 +10,5 @@ dist/
 *.js
 *.jsx
 *.map
+www/
+src/package.json

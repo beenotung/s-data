@@ -18,7 +18,8 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "target": "es6",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "jsxFactory": "Surplus"
   },
   "include": [
     "src/**/*.ts",

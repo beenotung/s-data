@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+set -o pipefail
+rm -rf dist www
+mkdir www
+npx webpack --mode=development
+cp -r dist www
+cp demo.html www/index.html
+surge www https://s-json-demo.surge.sh
