@@ -1,6 +1,6 @@
 {
   "name": "@beenotung/s-json",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "General purpose JSON viewer and editor",
   "keywords": [
     "s.js",
