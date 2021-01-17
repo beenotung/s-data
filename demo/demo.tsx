@@ -25,9 +25,8 @@ S.root(() => {
     const data = { ...sampleData };
     data.salary = '(cannot encode bigint)';
     return (
-      <pre>
-        <code>{JSON.stringify(data, undefined, 2)}</code>
-      </pre>
+      // prettier-ignore
+      <pre><code>{JSON.stringify(data, undefined, 2)}</code></pre>
     );
   }
 
