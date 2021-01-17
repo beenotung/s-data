@@ -5,9 +5,9 @@ import { JsonHelpers } from './helpers';
 Surplus;
 
 export type JsonViewProps<T> = {
-  data: T,
-  name?: string
-  expandElement?: boolean,
+  data: T;
+  name?: string;
+  expandElement?: boolean;
 };
 
 /**
@@ -23,53 +23,79 @@ export namespace JsonViewRenders {
   }
 
   export function set(prop: JsonViewProps<Set<any>>) {
-    return <ul>
-      {Array.from(prop.data).map(x => <li>
-        <JsonView {...prop} data={x}/>
-      </li>)}
-    </ul>;
+    return (
+      <ul>
+        {Array.from(prop.data).map((x) => (
+          <li>
+            <JsonView {...prop} data={x} />
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   export function map(props: JsonViewProps<Map<any, any>>) {
-    return <table>
-      <tbody>
-      {Array.from(props.data.entries()).map(([key, value]) => <tr>
-        <td><JsonView {...props} data={key}/></td>
-        <td>{'=>'}</td>
-        <td><JsonView {...props} data={value} name={key}/></td>
-      </tr>)}
-      </tbody>
-    </table>;
+    return (
+      <table>
+        <tbody>
+          {Array.from(props.data.entries()).map(([key, value]) => (
+            <tr>
+              <td>
+                <JsonView {...props} data={key} />
+              </td>
+              <td>{'=>'}</td>
+              <td>
+                <JsonView {...props} data={value} name={key} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
 
   export function array(props: JsonViewProps<any[]>) {
-    return <ol>
-      {props.data.map(x => <li>
-        <JsonView {...props} data={x}/>
-      </li>)}
-    </ol>;
+    return (
+      <ol>
+        {props.data.map((x) => (
+          <li>
+            <JsonView {...props} data={x} />
+          </li>
+        ))}
+      </ol>
+    );
   }
 
   export function table(data: Record<string, HTMLElement | Text>) {
-    return <table>
-      <tbody>
-      {Object.entries(data).map(([key, value]) => <tr>
-        <td>{string({ data: key })}:</td>
-        <td>{value as HTMLElement}</td>
-      </tr>)}
-      </tbody>
-    </table>;
+    return (
+      <table>
+        <tbody>
+          {Object.entries(data).map(([key, value]) => (
+            <tr>
+              <td>{string({ data: key })}:</td>
+              <td>{value as HTMLElement}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
 
   export function object(props: JsonViewProps<object>) {
-    return <table>
-      <tbody>
-      {Object.entries(props.data).map(([key, value]) => <tr>
-        <td>{string({ ...props, data: key })}:</td>
-        <td><JsonView {...props} data={value} name={key}/></td>
-      </tr>)}
-      </tbody>
-    </table>;
+    return (
+      <table>
+        <tbody>
+          {Object.entries(props.data).map(([key, value]) => (
+            <tr>
+              <td>{string({ ...props, data: key })}:</td>
+              <td>
+                <JsonView {...props} data={value} name={key} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
 
   export function string(props: JsonViewProps<string>) {
@@ -80,8 +106,9 @@ export namespace JsonViewRenders {
     const textContent = props.data.textContent;
     return table({
       textContent:
-        textContent === null ? Null(props) :
-          string({ ...props, data: textContent }),
+        textContent === null
+          ? Null(props)
+          : string({ ...props, data: textContent }),
     });
   }
 
@@ -151,7 +178,10 @@ export namespace JsonViewRenders {
   }
 
   export function unknown(props: JsonViewProps<unknown>) {
-    return string({ ...props, data: Object.prototype.toString.call(props.data) });
+    return string({
+      ...props,
+      data: Object.prototype.toString.call(props.data),
+    });
   }
 }
 const r = JsonViewRenders;

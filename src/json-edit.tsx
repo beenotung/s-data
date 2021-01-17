@@ -7,25 +7,21 @@ import { JsonViewRenders } from './json-view';
 Surplus;
 
 export type UpdateDetail = {
-  parent?: object
-  name?: string
-  oldValue: any
-  newValue: any,
+  parent?: object;
+  name?: string;
+  oldValue: any;
+  newValue: any;
 };
 export type JsonEditProps<T> = {
-  data: T,
-  name?: string
-  parent?: object
-  updateValue?: (value: T) => void
-  onChange?: (ev: Event, detail: UpdateDetail) => void
-  editElement?: boolean,
+  data: T;
+  name?: string;
+  parent?: object;
+  updateValue?: (value: T) => void;
+  onChange?: (ev: Event, detail: UpdateDetail) => void;
+  editElement?: boolean;
 };
 
-export type PrecisionType =
-  | 'minutes'
-  | 'seconds'
-  | 'milliseconds'
-  ;
+export type PrecisionType = 'minutes' | 'seconds' | 'milliseconds';
 
 /**
  * functions inside can be overridden
@@ -65,50 +61,69 @@ export namespace JsonEditRenders {
   }
 
   export function string(props: JsonEditProps<string>) {
-    return <input
-      name={JsonHelpers.toStringName(props.name)}
-      type='text'
-      value={props.data}
-      onChange={ev => update(ev, props, (ev.target as HTMLInputElement).value)
-      }
-    />;
+    return (
+      <input
+        name={JsonHelpers.toStringName(props.name)}
+        type="text"
+        value={props.data}
+        onChange={(ev) =>
+          update(ev, props, (ev.target as HTMLInputElement).value)
+        }
+      />
+    );
   }
 
   export function number(props: JsonEditProps<number>) {
-    return <input
-      name={JsonHelpers.toStringName(props.name)}
-      type='number'
-      value={props.data}
-      onChange={ev => update(ev, props, (ev.target as HTMLInputElement).valueAsNumber)}
-    />;
+    return (
+      <input
+        name={JsonHelpers.toStringName(props.name)}
+        type="number"
+        value={props.data}
+        onChange={(ev) =>
+          update(ev, props, (ev.target as HTMLInputElement).valueAsNumber)
+        }
+      />
+    );
   }
 
   export function bigint(props: JsonEditProps<bigint>) {
-    return <input
-      name={JsonHelpers.toStringName(props.name)}
-      type='text'
-      value={props.data.toString()}
-      onChange={ev => update(ev, props, BigInt((ev.target as HTMLInputElement).value))}
-    />;
+    return (
+      <input
+        name={JsonHelpers.toStringName(props.name)}
+        type="text"
+        value={props.data.toString()}
+        onChange={(ev) =>
+          update(ev, props, BigInt((ev.target as HTMLInputElement).value))
+        }
+      />
+    );
   }
 
   export function boolean(props: JsonEditProps<boolean>) {
-    return <input
-      name={JsonHelpers.toStringName(props.name)}
-      type='checkbox'
-      checked={props.data}
-      onChange={ev => update(ev, props, (ev.target as HTMLInputElement).checked)}
-    />;
+    return (
+      <input
+        name={JsonHelpers.toStringName(props.name)}
+        type="checkbox"
+        checked={props.data}
+        onChange={(ev) =>
+          update(ev, props, (ev.target as HTMLInputElement).checked)
+        }
+      />
+    );
   }
 
   // tslint:disable-next-line ban-types
   export function Function(props: JsonEditProps<Function>) {
-    return <textarea
-      name={JsonHelpers.toStringName(props.name)}
-      value={props.data.toString()}
-      // tslint:disable-next-line no-eval
-      onChange={ev => update(ev, props, eval((ev.target as HTMLTextAreaElement).value))}
-    />;
+    return (
+      <textarea
+        name={JsonHelpers.toStringName(props.name)}
+        value={props.data.toString()}
+        onChange={(ev) =>
+          // tslint:disable-next-line no-eval
+          update(ev, props, eval((ev.target as HTMLTextAreaElement).value))
+        }
+      />
+    );
   }
 
   export function symbol(props: JsonEditProps<symbol>) {
@@ -116,9 +131,11 @@ export namespace JsonEditRenders {
       <label>Symbol:</label>,
       <input
         name={JsonHelpers.toStringName(props.name)}
-        type='text'
+        type="text"
         value={Symbol.keyFor(props.data)}
-        onChange={ev => update(ev, props, Symbol.for((ev.target as HTMLInputElement).value))}
+        onChange={(ev) =>
+          update(ev, props, Symbol.for((ev.target as HTMLInputElement).value))
+        }
       />,
     ];
   }
@@ -152,7 +169,9 @@ export namespace JsonEditRenders {
 
   // input[type=date].value string format in local timezone
   export function dateString(date: Date): string {
-    return `${date.getFullYear()}-${d2(date.getMonth() + 1)}-${d2(date.getDate())}`;
+    return `${date.getFullYear()}-${d2(date.getMonth() + 1)}-${d2(
+      date.getDate(),
+    )}`;
   }
 
   // input[type=time].value string format in local timezone
@@ -177,9 +196,9 @@ export namespace JsonEditRenders {
     return [
       <input
         name={JsonHelpers.toStringName(props.name)}
-        type='date'
+        type="date"
         value={dateStr}
-        onChange={ev => {
+        onChange={(ev) => {
           const value = (ev.target as HTMLInputElement).value;
           if (value) {
             date = new Date(value + ' ' + timeStr);
@@ -199,9 +218,9 @@ export namespace JsonEditRenders {
       />,
       <input
         name={JsonHelpers.toStringName(props.name)}
-        type='time'
+        type="time"
         value={timeStr}
-        onChange={ev => {
+        onChange={(ev) => {
           const value = (ev.target as HTMLInputElement).value;
           if (value) {
             date = new Date(dateStr + ' ' + value);
@@ -220,67 +239,94 @@ export namespace JsonEditRenders {
   }
 
   export function set(props: JsonEditProps<Set<any>>) {
-    const signals = Array.from(props.data).map(x => S.data(x));
-    return <ul>{signals.map((signal) => <li>{JsonEdit({
-      ...props,
-      parent: props.data,
-      data: S.sample(signal),
-      updateValue: newValue => {
-        props.data.delete(signal());
-        props.data.add(newValue);
-        signal(newValue);
-      },
-    })}</li>)}</ul>;
+    const signals = Array.from(props.data).map((x) => S.data(x));
+    return (
+      <ul>
+        {signals.map((signal) => (
+          <li>
+            {JsonEdit({
+              ...props,
+              parent: props.data,
+              data: S.sample(signal),
+              updateValue: (newValue) => {
+                props.data.delete(signal());
+                props.data.add(newValue);
+                signal(newValue);
+              },
+            })}
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   export function map(props: JsonEditProps<Map<any, any>>) {
-    const signals = Array.from(props.data.entries()).map(x => S.data(x));
-    return <table>
-      <tbody>
-      {signals.map((kvSignal) => {
-        return <tr>
-          <td>{JsonEdit({
-            ...props,
-            parent: props.data,
-            data: S.sample(kvSignal)[0],
-            updateValue: newKey => {
-              const [key, value] = kvSignal();
-              props.data.delete(key);
-              props.data.set(newKey, value);
-              kvSignal([newKey, value]);
-            },
-          })}</td>
-          <td>{'=>'}</td>
-          <td>{JsonEdit({
-            ...props,
-            parent: props.data,
-            name: kvSignal()[0],
-            data: kvSignal()[1],
-            updateValue: newValue => {
-              const [key] = kvSignal();
-              props.data.set(key, newValue);
-              kvSignal([key, newValue]);
-            },
-          })}</td>
-        </tr>;
-      })}
-      </tbody>
-    </table>;
+    const signals = Array.from(props.data.entries()).map((x) => S.data(x));
+    return (
+      <table>
+        <tbody>
+          {signals.map((kvSignal) => {
+            return (
+              <tr>
+                <td>
+                  {JsonEdit({
+                    ...props,
+                    parent: props.data,
+                    data: S.sample(kvSignal)[0],
+                    updateValue: (newKey) => {
+                      const [key, value] = kvSignal();
+                      props.data.delete(key);
+                      props.data.set(newKey, value);
+                      kvSignal([newKey, value]);
+                    },
+                  })}
+                </td>
+                <td>{'=>'}</td>
+                <td>
+                  {JsonEdit({
+                    ...props,
+                    parent: props.data,
+                    name: kvSignal()[0],
+                    data: kvSignal()[1],
+                    updateValue: (newValue) => {
+                      const [key] = kvSignal();
+                      props.data.set(key, newValue);
+                      kvSignal([key, newValue]);
+                    },
+                  })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
   }
 
   export function array(props: JsonEditProps<any[]>) {
-    return <ol>{props.data.map((x, i) => <li>{JsonEdit({
-      ...props,
-      parent: props.data,
-      data: x,
-    })}</li>)}</ol>;
+    return (
+      <ol>
+        {props.data.map((x, i) => (
+          <li>
+            {JsonEdit({
+              ...props,
+              parent: props.data,
+              data: x,
+            })}
+          </li>
+        ))}
+      </ol>
+    );
   }
 
-  function asString(props: JsonEditProps<any>, options: {
-    name: Name | undefined,
-    data: string,
-    updateValue: (value: string) => void,
-  }) {
+  function asString(
+    props: JsonEditProps<any>,
+    options: {
+      name: Name | undefined;
+      data: string;
+      updateValue: (value: string) => void;
+    },
+  ) {
     return string({
       ...props,
       ...options,
@@ -292,11 +338,10 @@ export namespace JsonEditRenders {
       textContent: asString(props, {
         name: 'textContent',
         data: props.data.textContent || '',
-        updateValue: value => props.data.textContent = value,
+        updateValue: (value) => (props.data.textContent = value),
       }),
     });
   }
-
 
   export function attributes(props: JsonEditProps<HTMLElement>): HTMLElement {
     const table = document.createElement('table');
@@ -307,29 +352,35 @@ export namespace JsonEditRenders {
       if (attr === null) {
         continue;
       }
-      tbody.appendChild(<tr>
-        <td>{string({
-          ...props,
-          parent: attr,
-          name: 'attributes',
-          data: attr.name,
-          updateValue: newName => {
-            const value = attr.value;
-            attrs.removeNamedItem(attr.name);
-            props.data.setAttribute(newName, value);
-          },
-        })}</td>
-        <td>:</td>
-        <td>{string({
-          ...props,
-          parent: attr,
-          name: attr.name,
-          data: attr.value,
-          updateValue: newValue => {
-            props.data.setAttribute(attr.name, newValue);
-          },
-        })}</td>
-      </tr>);
+      tbody.appendChild(
+        <tr>
+          <td>
+            {string({
+              ...props,
+              parent: attr,
+              name: 'attributes',
+              data: attr.name,
+              updateValue: (newName) => {
+                const value = attr.value;
+                attrs.removeNamedItem(attr.name);
+                props.data.setAttribute(newName, value);
+              },
+            })}
+          </td>
+          <td>:</td>
+          <td>
+            {string({
+              ...props,
+              parent: attr,
+              name: attr.name,
+              data: attr.value,
+              updateValue: (newValue) => {
+                props.data.setAttribute(attr.name, newValue);
+              },
+            })}
+          </td>
+        </tr>,
+      );
     }
     table.appendChild(tbody);
     return table;
@@ -338,25 +389,40 @@ export namespace JsonEditRenders {
   export function htmlElement(props: JsonEditProps<HTMLElement>) {
     const e = props.data as HTMLInputElement;
     const children: Array<HTMLElement | HTMLElement[]> = [];
-    e.childNodes.forEach(child => children.push(JsonEdit({ ...props, data: child })));
+    e.childNodes.forEach((child) =>
+      children.push(JsonEdit({ ...props, data: child })),
+    );
     return JsonViewRenders.table({
       tagName: JsonViewRenders.string({ name: 'tagName', data: e.tagName }),
-      id: asString(props, { name: 'id', data: e.id, updateValue: value => props.data.id = value }),
-      className: asString(props, { name: 'className', data: e.className, updateValue: value => props.data.className = value }),
+      id: asString(props, {
+        name: 'id',
+        data: e.id,
+        updateValue: (value) => (props.data.id = value),
+      }),
+      className: asString(props, {
+        name: 'className',
+        data: e.className,
+        updateValue: (value) => (props.data.className = value),
+      }),
       attributes: attributes(props),
-      nodeValue: asString(props, { name: 'nodeValue', data: e.nodeValue || '', updateValue: value => props.data.nodeValue = value }),
+      nodeValue: asString(props, {
+        name: 'nodeValue',
+        data: e.nodeValue || '',
+        updateValue: (value) => (props.data.nodeValue = value),
+      }),
       value: JsonEdit({
         ...props,
         name: 'value',
         data: e.value,
-        updateValue: value => (props.data as HTMLInputElement).value = value,
+        updateValue: (value) =>
+          ((props.data as HTMLInputElement).value = value),
       }) as HTMLElement,
       childNodes: array({
         ...props,
         editElement: false,
         name: 'childNodes',
         data: children,
-        updateValue: value => {
+        updateValue: (value) => {
           console.log('update childNodes', value);
         },
       }),
@@ -364,31 +430,41 @@ export namespace JsonEditRenders {
   }
 
   export function object(props: JsonEditProps<object>) {
-    const signals = Object.entries(props.data).map(x => S.data(x));
-    return <table>
-      <tbody>{signals.map((kvSignal) => {
-        return <tr>
-          <td>{string({
-            ...props,
-            parent: props.data,
-            data: S.sample(kvSignal)[0],
-            updateValue: newKey => {
-              const [key, value] = kvSignal();
-              delete (props.data as any)[key];
-              (props.data as any)[newKey] = value;
-              kvSignal([newKey, value]);
-            },
-          })}</td>
-          <td>:</td>
-          <td>{JsonEdit({
-            ...props,
-            parent: props.data,
-            name: kvSignal()[0],
-            data: kvSignal()[1],
-          })}</td>
-        </tr>;
-      })}</tbody>
-    </table>;
+    const signals = Object.entries(props.data).map((x) => S.data(x));
+    return (
+      <table>
+        <tbody>
+          {signals.map((kvSignal) => {
+            return (
+              <tr>
+                <td>
+                  {string({
+                    ...props,
+                    parent: props.data,
+                    data: S.sample(kvSignal)[0],
+                    updateValue: (newKey) => {
+                      const [key, value] = kvSignal();
+                      delete (props.data as any)[key];
+                      (props.data as any)[newKey] = value;
+                      kvSignal([newKey, value]);
+                    },
+                  })}
+                </td>
+                <td>:</td>
+                <td>
+                  {JsonEdit({
+                    ...props,
+                    parent: props.data,
+                    name: kvSignal()[0],
+                    data: kvSignal()[1],
+                  })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
   }
 
   export function unknown(props: JsonEditProps<unknown>) {
@@ -417,7 +493,9 @@ const r = JsonEditRenders;
  *   + Array
  *   + object
  * */
-export function JsonEdit(props: JsonEditProps<any>): HTMLElement | HTMLElement[] {
+export function JsonEdit(
+  props: JsonEditProps<any>,
+): HTMLElement | HTMLElement[] {
   const data: unknown = props.data;
   const type = typeof data;
   switch (type) {

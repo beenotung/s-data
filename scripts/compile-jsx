@@ -25,3 +25,4 @@ function scan(dir) {
 }
 
 scan('src');
+scan('demo')

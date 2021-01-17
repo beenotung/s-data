@@ -1,8 +1,8 @@
 import * as Surplus from 'surplus';
 import S from 's-js';
 import { sampleData } from 'stencil-lib/components/json/json-common';
-import { JsonEdit } from './src/json-edit';
-import { JsonView } from './src/json-view';
+import { JsonEdit } from '../src/json-edit';
+import { JsonView } from '../src/json-view';
 
 // tslint:disable-next-line no-unused-expression
 Surplus;
@@ -18,36 +18,32 @@ S.root(() => {
   let lastUpdate = S.data(Date.now());
 
   function view(_signal: any) {
-    return <JsonView data={sampleData}/>;
+    return <JsonView data={sampleData} />;
   }
 
   function raw(_signal: any) {
     const data = { ...sampleData };
     data.salary = '(cannot encode bigint)';
-    return <pre><code>{JSON.stringify(data, undefined, 2)}</code></pre>;
+    return (
+      <pre>
+        <code>{JSON.stringify(data, undefined, 2)}</code>
+      </pre>
+    );
   }
 
-  let main =
+  let main = (
     <div>
       Last update: {new Date(lastUpdate()).toLocaleString()}
-      <div class='main'>
+      <div class="main">
         <div>
-          <h2>
-            JSON
-          </h2>
-          <div class='demo'>{raw(lastUpdate())}</div>
-          <h2>
-            JsonView
-          </h2>
-          <div class='demo'>
-            {view(lastUpdate())}
-          </div>
+          <h2>JSON</h2>
+          <div class="demo">{raw(lastUpdate())}</div>
+          <h2>JsonView</h2>
+          <div class="demo">{view(lastUpdate())}</div>
         </div>
         <div>
-          <h2>
-            JsonEdit
-          </h2>
-          <div class='demo'>
+          <h2>JsonEdit</h2>
+          <div class="demo">
             {JsonEdit({
               data: sampleData,
               editElement: true,
@@ -59,7 +55,8 @@ S.root(() => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
   document.body.appendChild(main);
   Object.assign(window, { sampleData });
 });

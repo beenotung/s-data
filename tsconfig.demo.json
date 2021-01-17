@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "downlevelIteration": false,
+    "importHelpers": true,
+    "lib": [
+      "dom",
+      "es2018"
+    ],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "preserve",
+    "jsxFactory": "Surplus"
+  },
+  "include": [
+    "demo/**/*.ts",
+    "demo/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.macro.ts",
+    "src/**/*.spec.ts"
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
