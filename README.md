@@ -3,6 +3,8 @@ General purpose data viewer and editor
 
 [![npm Package Version](https://img.shields.io/npm/v/s-data.svg?maxAge=2592000)](https://www.npmjs.com/package/s-data)
 
+(This package was renamed from [@beenotung/s-json](https://www.npmjs.com/package/@beenotung/s-json))
+
 Powered by
 [S.js](https://github.com/adamhaile/S)
 and
