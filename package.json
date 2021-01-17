@@ -35,7 +35,6 @@
     }
   },
   "dependencies": {
-    "@beenotung/tslib": "^16.15.0",
     "s-array": "^0.4.10",
     "s-js": "^0.4.9",
     "surplus": "^0.5.3",
