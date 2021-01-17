@@ -8,4 +8,4 @@ rm -rf www
 mkdir www
 cp -r dist www
 cp demo.html www/index.html
-surge www https://s-json-demo.surge.sh
+npm run upload
