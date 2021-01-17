@@ -1,7 +1,7 @@
 {
-  "name": "@beenotung/s-json",
+  "name": "s-data",
   "version": "0.1.1",
-  "description": "General purpose JSON viewer and editor",
+  "description": "General purpose data viewer and editor",
   "keywords": [
     "s.js",
     "surplus",

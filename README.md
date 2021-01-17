@@ -1,7 +1,7 @@
-# s-json
+# s-data
 General purpose data viewer and editor
 
-[![npm Package Version](https://img.shields.io/npm/v/@beenotung/s-json.svg?maxAge=2592000)](https://www.npmjs.com/package/@beenotung/s-json)
+[![npm Package Version](https://img.shields.io/npm/v/s-data.svg?maxAge=2592000)](https://www.npmjs.com/package/s-data)
 
 Powered by
 [S.js](https://github.com/adamhaile/S)
@@ -12,7 +12,7 @@ Demo: https://s-json-demo.surge.sh/
 
 ## Installation
 ```bash
-npm install @beenotung/s-json
+npm install s-data
 ```
 
 ## Typescript Signature
