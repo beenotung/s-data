@@ -35,7 +35,7 @@ export namespace JsonViewRenders {
       <tbody>
       {Array.from(props.data.entries()).map(([key, value]) => <tr>
         <td><JsonView {...props} data={key}/></td>
-        <td>=></td>
+        <td>{'=>'}</td>
         <td><JsonView {...props} data={value} name={key}/></td>
       </tr>)}
       </tbody>

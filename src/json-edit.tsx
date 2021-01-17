@@ -250,7 +250,7 @@ export namespace JsonEditRenders {
               kvSignal([newKey, value]);
             },
           })}</td>
-          <td>=></td>
+          <td>{'=>'}</td>
           <td>{JsonEdit({
             ...props,
             parent: props.data,
